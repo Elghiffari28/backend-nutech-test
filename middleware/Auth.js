@@ -6,7 +6,11 @@ export const authMiddleware = (req, res, next) => {
     console.log(authHeader);
 
     if (!authHeader) {
-      return res.status(401).json({ message: "Token tidak ada" });
+      return res.status(401).json({
+        status: 108,
+        message: "Token tidak tidak valid atau kadaluwarsa",
+        data: null,
+      });
     }
 
     const token = authHeader.split(" ")[1];
@@ -16,9 +20,10 @@ export const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    console.error(error);
     return res.status(401).json({
-      message: "Token invalid",
+      status: 108,
+      message: "Token tidak tidak valid atau kadaluwarsa",
+      data: null,
     });
   }
 };

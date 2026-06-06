@@ -62,19 +62,3 @@ export const login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-export const getProfile = async (req, res) => {
-  try {
-    const email = req.user.email;
-
-    const query = `SELECT email, first_name, last_name, profile_image FROM users WHERE email = ?`;
-    const [result] = await db.execute(query, [email]);
-    if (result.length === 0) {
-      return res.json({ message: "User tidak ada" });
-    }
-
-    res.json({ status: 0, message: "Suksess", data: result[0] });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};

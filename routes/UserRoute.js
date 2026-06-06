@@ -1,12 +1,23 @@
 import express from "express";
-import { getProfile, login, registration } from "../controllers/Auth.js";
+import {
+  getBalance,
+  getProfile,
+  updateProfile,
+  updateProfileImage,
+} from "../controllers/User.js";
 import { upload } from "../config/UploadImage.js";
 import { authMiddleware } from "../middleware/Auth.js";
 
 const router = express.Router();
 
-router.post("/register", upload.none(), registration);
-router.post("/login", upload.none(), login);
 router.get("/profile", authMiddleware, getProfile);
+router.put("/profile/update", upload.none(), authMiddleware, updateProfile);
+router.put(
+  "/profile/image",
+  upload.single("profile_image"),
+  authMiddleware,
+  updateProfileImage,
+);
+router.get("/balance", authMiddleware, getBalance);
 
 export default router;
