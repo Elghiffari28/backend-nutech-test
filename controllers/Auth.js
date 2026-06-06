@@ -1,9 +1,21 @@
 import bcrypt from "bcrypt";
 import db from "../config/Database.js";
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 
 export const registration = async (req, res) => {
+  const errors = validationResult(req);
+  const messages = errors.array().map((e) => e.msg);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      status: 102,
+      message: messages,
+      data: null,
+    });
+  }
   const { email, first_name, last_name, password } = req.body;
+
   const hashPassword = await bcrypt.hash(password, 10);
 
   const connection = await db.getConnection();
