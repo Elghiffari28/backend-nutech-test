@@ -20,12 +20,14 @@ export const registration = async (req, res) => {
     await connection.commit();
 
     res.json({
-      message: "Register berhasil",
+      status: 0,
+      message: "Registrasi berhasil silahkan login",
+      data: null,
     });
   } catch (error) {
     await connection.rollback();
     res.status(500).json({
-      message: err.message,
+      message: error.message,
     });
   } finally {
     connection.release();
